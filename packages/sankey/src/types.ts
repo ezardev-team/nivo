@@ -18,6 +18,7 @@ export interface SankeyRawNode {
 
 export interface DefaultNode {
     id: string
+    gap: number
 }
 
 export interface DefaultLink {

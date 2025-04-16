@@ -70,16 +70,27 @@ export const computeNodeAndLinks = <N extends DefaultNode, L extends DefaultLink
         node.label = getLabel(node)
         node.formattedValue = formatValue(node.value)
 
+        const nodesAtSameDepth = data.nodes.filter(n => n.layer === node.layer)
+        const lastNodeAtSameDepth = nodesAtSameDepth.reduce((acc, n) => {
+            return n.y0 < node.y0 && n.y0 > (acc?.y0 || -Infinity) ? n : acc
+        }, null as SankeyNodeDatum<N, L> | null)
+
+        const newMargin = (lastNodeAtSameDepth?.gap || 0) + (node.gap || 0)
+
+        console.log('node', node.label, lastNodeAtSameDepth, newMargin)
+
         if (layout === 'horizontal') {
             node.x = node.x0 + nodeInnerPadding
-            node.y = node.y0
+            node.y = node.y0 + newMargin
+            node.gap = newMargin
             node.width = Math.max(node.x1 - node.x0 - nodeInnerPadding * 2, 0)
             node.height = Math.max(node.y1 - node.y0, 0)
         } else {
             node.x = node.y0
-            node.y = node.x0 + nodeInnerPadding
+            node.y = node.x0 + nodeInnerPadding + newMargin
+            node.gap = newMargin
             node.width = Math.max(node.y1 - node.y0, 0)
-            node.height = Math.max(node.x1 - node.x0 - nodeInnerPadding * 2, 0)
+            node.height = Math.max(node.x1 - node.x0 - nodeInnerPadding * 2 - newMargin * 2, 0)
 
             const oldX0 = node.x0
             const oldX1 = node.x1
@@ -94,10 +105,20 @@ export const computeNodeAndLinks = <N extends DefaultNode, L extends DefaultLink
     data.links.forEach(link => {
         link.formattedValue = formatValue(link.value)
         link.color = link.source.color
-        // @ts-expect-error: @types/d3-sankey
-        link.pos0 = link.y0
-        // @ts-expect-error: @types/d3-sankey
-        link.pos1 = link.y1
+
+        // Adjust link positions based on node margins
+        if (layout === 'horizontal') {
+            // @ts-expect-error: @types/d3-sankey
+            link.pos0 = link.y0 + link.source.gap
+            // @ts-expect-error: @types/d3-sankey
+            link.pos1 = link.y1 + link.target.gap
+        } else {
+            // @ts-expect-error: @types/d3-sankey
+            link.pos0 = link.y0 + link.source.gap
+            // @ts-expect-error: @types/d3-sankey
+            link.pos1 = link.y1 + link.target.gap
+        }
+
         // @ts-expect-error: @types/d3-sankey
         link.thickness = link.width
         // @ts-expect-error: @types/d3-sankey
