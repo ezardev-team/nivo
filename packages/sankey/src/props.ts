@@ -27,6 +27,7 @@ export const svgDefaultProps = {
     nodeHoverOthersOpacity: 0.15,
     nodeThickness: 12,
     nodeSpacing: 12,
+    spacingIncrease: 0,
     nodeInnerPadding: 0,
     nodeBorderWidth: 1,
     nodeBorderColor: { from: 'color', modifiers: [['darker', 0.5]] } as InheritedColorConfig<

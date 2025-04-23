@@ -26,6 +26,7 @@ export const computeNodeAndLinks = <N extends DefaultNode, L extends DefaultLink
     linkSortMode,
     nodeThickness,
     nodeSpacing,
+    spacingIncrease,
     nodeInnerPadding,
     width,
     height,
@@ -40,6 +41,7 @@ export const computeNodeAndLinks = <N extends DefaultNode, L extends DefaultLink
     linkSortMode: null | undefined
     nodeThickness: SankeyCommonProps<N, L>['nodeThickness']
     nodeSpacing: SankeyCommonProps<N, L>['nodeSpacing']
+    spacingIncrease: SankeyCommonProps<N, L>['spacingIncrease']
     nodeInnerPadding: SankeyCommonProps<N, L>['nodeInnerPadding']
     width: number
     height: number
@@ -65,6 +67,14 @@ export const computeNodeAndLinks = <N extends DefaultNode, L extends DefaultLink
     }
     sankey(data)
 
+    const totalLayer = Math.max(...data.nodes.map(node => node.layer))
+    const centerLayer = Math.floor(totalLayer / 2)
+
+    data.nodes.forEach(node => {
+        node.gap = (node.gap ?? 0) + spacingIncrease * Math.abs(centerLayer - node.layer)
+        console.log('node', node.label, node.gap)
+    })
+
     data.nodes.forEach(node => {
         node.color = getColor(node)
         node.label = getLabel(node)
@@ -76,8 +86,6 @@ export const computeNodeAndLinks = <N extends DefaultNode, L extends DefaultLink
         }, null as SankeyNodeDatum<N, L> | null)
 
         const newMargin = (lastNodeAtSameDepth?.gap || 0) + (node.gap || 0)
-
-        console.log('node', node.label, lastNodeAtSameDepth, newMargin)
 
         if (layout === 'horizontal') {
             node.x = node.x0 + nodeInnerPadding
@@ -143,6 +151,7 @@ export const useSankey = <N extends DefaultNode, L extends DefaultLink>({
     colors,
     nodeThickness,
     nodeSpacing,
+    spacingIncrease,
     nodeInnerPadding,
     nodeBorderColor,
     label,
@@ -158,6 +167,7 @@ export const useSankey = <N extends DefaultNode, L extends DefaultLink>({
     colors: SankeyCommonProps<N, L>['colors']
     nodeThickness: SankeyCommonProps<N, L>['nodeThickness']
     nodeSpacing: SankeyCommonProps<N, L>['nodeSpacing']
+    spacingIncrease: SankeyCommonProps<N, L>['spacingIncrease']
     nodeInnerPadding: SankeyCommonProps<N, L>['nodeInnerPadding']
     nodeBorderColor: SankeyCommonProps<N, L>['nodeBorderColor']
     label: SankeyCommonProps<N, L>['label']
@@ -210,6 +220,7 @@ export const useSankey = <N extends DefaultNode, L extends DefaultLink>({
                 linkSortMode,
                 nodeThickness,
                 nodeSpacing,
+                spacingIncrease,
                 nodeInnerPadding,
                 width,
                 height,
@@ -225,6 +236,7 @@ export const useSankey = <N extends DefaultNode, L extends DefaultLink>({
             linkSortMode,
             nodeThickness,
             nodeSpacing,
+            spacingIncrease,
             nodeInnerPadding,
             width,
             height,

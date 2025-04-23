@@ -145,6 +145,7 @@ export interface SankeyCommonProps<N extends DefaultNode, L extends DefaultLink>
     nodeHoverOthersOpacity: number
     nodeThickness: number
     nodeSpacing: number
+    spacingIncrease: number
     nodeInnerPadding: number
     nodeBorderWidth: number
     nodeBorderColor: InheritedColorConfig<SankeyNodeDatum<N, L>>
