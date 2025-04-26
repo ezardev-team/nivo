@@ -72,7 +72,6 @@ export const computeNodeAndLinks = <N extends DefaultNode, L extends DefaultLink
 
     data.nodes.forEach(node => {
         node.gap = (node.gap ?? 0) + spacingIncrease * Math.abs(centerLayer - node.layer)
-        console.log('node', node.label, node.gap)
     })
 
     data.nodes.forEach(node => {
