@@ -2,12 +2,12 @@ import * as React from 'react'
 import {
     Box,
     Dimensions,
-    Theme,
     SvgDefsAndFill,
     MotionProps,
     ValueFormat,
     PropertyAccessor,
 } from '@nivo/core'
+import { PartialTheme } from '@nivo/theming'
 import {
     Arc,
     ArcGenerator,
@@ -28,6 +28,7 @@ export interface DefaultRawDatum {
     value: number
 }
 
+// eslint-disable-next-line
 export interface MayHaveLabel extends Object {
     label?: string | number
 }
@@ -103,7 +104,7 @@ export type CommonPieProps<RawDatum> = {
 
     // colors, theme and border
     colors: OrdinalColorScaleConfig<Omit<ComputedDatum<RawDatum>, 'color' | 'fill' | 'arc'>>
-    theme: Theme
+    theme: PartialTheme
     borderWidth: number
     borderColor: InheritedColorConfig<ComputedDatum<RawDatum>>
 

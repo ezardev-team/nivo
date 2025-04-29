@@ -1,14 +1,13 @@
 import { useRef, useMemo, useCallback } from 'react'
-import PropTypes from 'prop-types'
 import {
     TooltipActionsContext,
     TooltipStateContext,
     useTooltipHandlers,
     Tooltip,
 } from '@nivo/tooltip'
+import { ThemeProvider } from '@nivo/theming'
 import noop from '../lib/noop'
-import { ThemeProvider } from '../theming'
-import { MotionConfigProvider, motionPropTypes } from '../motion'
+import { MotionConfigProvider } from '../motion'
 import { ConditionalWrapper } from './ConditionalWrapper'
 
 const containerStyle = {
@@ -21,6 +20,15 @@ const containerStyle = {
  * `Container` component.
  *
  * @deprecated
+ *
+ * LegacyContainer.propTypes = {
+ *     children: PropTypes.func.isRequired,
+ *     isInteractive: PropTypes.bool,
+ *     renderWrapper: PropTypes.bool,
+ *     theme: PropTypes.object.isRequired,
+ *     animate: PropTypes.bool.isRequired,
+ *     motionConfig: PropTypes.oneOfType([PropTypes.string, motionPropTypes.motionConfig]),
+ * }
  */
 export const LegacyContainer = ({
     children,
@@ -64,13 +72,4 @@ export const LegacyContainer = ({
             </MotionConfigProvider>
         </ThemeProvider>
     )
-}
-
-LegacyContainer.propTypes = {
-    children: PropTypes.func.isRequired,
-    isInteractive: PropTypes.bool,
-    renderWrapper: PropTypes.bool,
-    theme: PropTypes.object.isRequired,
-    animate: PropTypes.bool.isRequired,
-    motionConfig: PropTypes.oneOfType([PropTypes.string, motionPropTypes.motionConfig]),
 }

@@ -11,7 +11,8 @@ import {
     curveStepBefore,
     curveStepAfter,
 } from 'd3-shape'
-import { Margin, usePropertyAccessor, useTheme } from '@nivo/core'
+import { Margin, usePropertyAccessor } from '@nivo/core'
+import { useTheme } from '@nivo/theming'
 import { TooltipAnchor, TooltipPosition, useTooltip } from '@nivo/tooltip'
 import { useOrdinalColorScale, useInheritedColor } from '@nivo/colors'
 import {
@@ -528,7 +529,10 @@ export const useNodeMouseEventHandlers = <Datum>(
         onMouseEnter,
         onMouseMove,
         onMouseLeave,
+        onMouseDown,
+        onMouseUp,
         onClick,
+        onDoubleClick,
         setCurrentNode,
         tooltip,
         tooltipPosition,
@@ -539,7 +543,10 @@ export const useNodeMouseEventHandlers = <Datum>(
         onMouseEnter?: NodeMouseEventHandler<Datum>
         onMouseMove?: NodeMouseEventHandler<Datum>
         onMouseLeave?: NodeMouseEventHandler<Datum>
+        onMouseDown?: NodeMouseEventHandler<Datum>
+        onMouseUp?: NodeMouseEventHandler<Datum>
         onClick?: NodeMouseEventHandler<Datum>
+        onDoubleClick?: NodeMouseEventHandler<Datum>
         setCurrentNode: CurrentNodeSetter<Datum>
         tooltip?: NodeTooltip<Datum>
         tooltipPosition: TooltipPosition
@@ -602,6 +609,20 @@ export const useNodeMouseEventHandlers = <Datum>(
         [node, hideTooltip, setCurrentNode, onMouseLeave]
     )
 
+    const handleMouseDown = useCallback(
+        (event: MouseEvent) => {
+            onMouseDown?.(node, event)
+        },
+        [node, onMouseDown]
+    )
+
+    const handleMouseUp = useCallback(
+        (event: MouseEvent) => {
+            onMouseUp?.(node, event)
+        },
+        [node, onMouseUp]
+    )
+
     const handleClick = useCallback(
         (event: MouseEvent) => {
             onClick?.(node, event)
@@ -609,11 +630,21 @@ export const useNodeMouseEventHandlers = <Datum>(
         [node, onClick]
     )
 
+    const handleDoubleClick = useCallback(
+        (event: MouseEvent) => {
+            onDoubleClick?.(node, event)
+        },
+        [node, onDoubleClick]
+    )
+
     return {
         onMouseEnter: isInteractive ? handleMouseEnter : undefined,
         onMouseMove: isInteractive ? handleMouseMove : undefined,
         onMouseLeave: isInteractive ? handleMouseLeave : undefined,
+        onMouseDown: isInteractive ? handleMouseDown : undefined,
+        onMouseUp: isInteractive ? handleMouseUp : undefined,
         onClick: isInteractive ? handleClick : undefined,
+        onDoubleClick: isInteractive ? handleDoubleClick : undefined,
     }
 }
 
@@ -629,7 +660,10 @@ export const useLinkMouseEventHandlers = <Datum>(
         onMouseEnter,
         onMouseMove,
         onMouseLeave,
+        onMouseDown,
+        onMouseUp,
         onClick,
+        onDoubleClick,
         tooltip,
         tooltipAnchor,
     }: {
@@ -637,7 +671,10 @@ export const useLinkMouseEventHandlers = <Datum>(
         onMouseEnter?: LinkMouseEventHandler<Datum>
         onMouseMove?: LinkMouseEventHandler<Datum>
         onMouseLeave?: LinkMouseEventHandler<Datum>
+        onMouseDown?: LinkMouseEventHandler<Datum>
+        onMouseUp?: LinkMouseEventHandler<Datum>
         onClick?: LinkMouseEventHandler<Datum>
+        onDoubleClick?: LinkMouseEventHandler<Datum>
         tooltip?: LinkTooltip<Datum>
         tooltipAnchor: TooltipAnchor
     }
@@ -682,6 +719,20 @@ export const useLinkMouseEventHandlers = <Datum>(
         [link, hideTooltip, onMouseLeave]
     )
 
+    const handleMouseDown = useCallback(
+        (event: MouseEvent) => {
+            onMouseDown?.(link, event)
+        },
+        [link, onMouseDown]
+    )
+
+    const handleMouseUp = useCallback(
+        (event: MouseEvent) => {
+            onMouseUp?.(link, event)
+        },
+        [link, onMouseUp]
+    )
+
     const handleClick = useCallback(
         (event: MouseEvent) => {
             onClick?.(link, event)
@@ -689,10 +740,20 @@ export const useLinkMouseEventHandlers = <Datum>(
         [link, onClick]
     )
 
+    const handleDoubleClick = useCallback(
+        (event: MouseEvent) => {
+            onDoubleClick?.(link, event)
+        },
+        [link, onDoubleClick]
+    )
+
     return {
         onMouseEnter: isInteractive ? handleMouseEnter : undefined,
         onMouseMove: isInteractive ? handleMouseMove : undefined,
         onMouseLeave: isInteractive ? handleMouseLeave : undefined,
+        onMouseDown: isInteractive ? handleMouseDown : undefined,
+        onMouseUp: isInteractive ? handleMouseUp : undefined,
         onClick: isInteractive ? handleClick : undefined,
+        onDoubleClick: isInteractive ? handleDoubleClick : undefined,
     }
 }

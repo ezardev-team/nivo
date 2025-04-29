@@ -13,7 +13,7 @@ export type OtherScaleAxis<Axis extends ScaleAxis> = Axis extends 'x' ? 'y' : 'x
 
 export type NumericValue = { valueOf(): number }
 export type StringValue = { toString(): string }
-export type ScaleValue = NumericValue | StringValue | Date
+export type ScaleValue = NumericValue | StringValue | Date | null
 
 export interface ScaleTypeToSpec {
     linear: ScaleLinearSpec
@@ -51,6 +51,7 @@ export type ScaleLinearSpec = {
     reverse?: boolean
     clamp?: boolean
     nice?: boolean | number
+    round?: boolean
 }
 export interface ScaleLinear<Output> extends D3ScaleLinear<number, Output, never> {
     type: 'linear'
@@ -79,7 +80,12 @@ export interface ScaleSymlogSpec {
     min?: 'auto' | number
     // default to `auto`
     max?: 'auto' | number
+    // default to `true`
+    round?: boolean
+    // default to `false`
     reverse?: boolean
+    // default to `true`
+    nice?: boolean | number
 }
 export interface ScaleSymlog extends D3ScaleSymLog<number, number> {
     type: 'symlog'

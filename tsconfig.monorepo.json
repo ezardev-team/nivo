@@ -5,6 +5,7 @@
         // { "path": "./packages/core" },
 
         // Shared next because charts need them
+        { "path": "./packages/theming" },
         { "path": "./packages/text" },
         { "path": "./packages/canvas" },
         { "path": "./packages/annotations" },
@@ -31,9 +32,11 @@
         { "path": "./packages/circle-packing" },
         { "path": "./packages/funnel" },
         { "path": "./packages/heatmap" },
+        { "path": "./packages/line" },
         { "path": "./packages/marimekko" },
         { "path": "./packages/network" },
         { "path": "./packages/pie" },
+        { "path": "./packages/polar-bar" },
         { "path": "./packages/radar" },
         { "path": "./packages/radial-bar" },
         { "path": "./packages/sankey" },

@@ -1,6 +1,7 @@
 import { FunctionComponent, MouseEvent } from 'react'
 import { Line as D3Line } from 'd3-shape'
-import { Theme, Box, Dimensions, MotionProps } from '@nivo/core'
+import { Box, Dimensions, MotionProps } from '@nivo/core'
+import { PartialTheme } from '@nivo/theming'
 import { OrdinalColorScaleConfig, InheritedColorConfig } from '@nivo/colors'
 import { AxisProps } from '@nivo/axes'
 import { ScalePoint } from '@nivo/scales'
@@ -144,7 +145,7 @@ export interface BumpBaseCommonProps<
     xOuterPadding: number
     yOuterPadding: number
 
-    theme: Theme
+    theme: PartialTheme
     colors: OrdinalColorScaleConfig<BumpSerie<Datum, ExtraProps>>
     lineWidth: number
     activeLineWidth: number
@@ -208,7 +209,10 @@ interface BumpMeshCommonProps<Datum extends BumpDatum, ExtraProps extends BumpSe
     onMouseEnter?: BumpPointMouseHandler<Datum, ExtraProps>
     onMouseMove?: BumpPointMouseHandler<Datum, ExtraProps>
     onMouseLeave?: BumpPointMouseHandler<Datum, ExtraProps>
+    onMouseDown?: BumpPointMouseHandler<Datum, ExtraProps>
+    onMouseUp?: BumpPointMouseHandler<Datum, ExtraProps>
     onClick?: BumpPointMouseHandler<Datum, ExtraProps>
+    onDoubleClick?: BumpPointMouseHandler<Datum, ExtraProps>
 }
 
 interface BumpSerieCommonProps<Datum extends BumpDatum, ExtraProps extends BumpSerieExtraProps>
@@ -217,7 +221,10 @@ interface BumpSerieCommonProps<Datum extends BumpDatum, ExtraProps extends BumpS
     onMouseEnter?: BumpSerieMouseHandler<Datum, ExtraProps>
     onMouseMove?: BumpSerieMouseHandler<Datum, ExtraProps>
     onMouseLeave?: BumpSerieMouseHandler<Datum, ExtraProps>
+    onMouseDown?: BumpSerieMouseHandler<Datum, ExtraProps>
+    onMouseUp?: BumpSerieMouseHandler<Datum, ExtraProps>
     onClick?: BumpSerieMouseHandler<Datum, ExtraProps>
+    onDoubleClick?: BumpSerieMouseHandler<Datum, ExtraProps>
 }
 
 export type BumpCommonProps<Datum extends BumpDatum, ExtraProps extends BumpSerieExtraProps> =

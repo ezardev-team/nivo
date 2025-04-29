@@ -1,16 +1,8 @@
-/*
- * This file is part of the nivo project.
- *
- * Copyright 2016-present, Raphaël Benitte.
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
 import { memo, Fragment, useCallback } from 'react'
-import { SvgWrapper, withContainer, useDimensions, useTheme, bindDefs } from '@nivo/core'
+import { SvgWrapper, withContainer, useDimensions, bindDefs } from '@nivo/core'
+import { useTheme } from '@nivo/theming'
 import { BoxLegendSvg } from '@nivo/legends'
 import { useTooltip } from '@nivo/tooltip'
-import { ChoroplethPropTypes } from './props'
 import GeoGraticule from './GeoGraticule'
 import GeoMapFeature from './GeoMapFeature'
 import { useGeoMap, useChoropleth } from './hooks'
@@ -163,8 +155,5 @@ const Choropleth = memo(props => {
         </SvgWrapper>
     )
 })
-
-Choropleth.displayName = 'Choropleth'
-Choropleth.propTypes = ChoroplethPropTypes
 
 export default withContainer(Choropleth)

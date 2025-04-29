@@ -1,6 +1,6 @@
 {
     "name": "@nivo/line",
-    "version": "0.88.0",
+    "version": "0.92.0",
     "license": "MIT",
     "author": {
         "name": "Raphaël Benitte",
@@ -20,8 +20,15 @@
         "line-chart"
     ],
     "main": "./dist/nivo-line.cjs.js",
-    "module": "./dist/nivo-line.es.js",
-    "types": "./index.d.ts",
+    "module": "./dist/nivo-line.mjs",
+    "types": "./dist/types/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/types/index.d.ts",
+            "import": "./dist/nivo-line.mjs",
+            "require": "./dist/nivo-line.cjs.js"
+        }
+    },
     "files": [
         "README.md",
         "LICENSE.md",
@@ -35,13 +42,15 @@
         "@nivo/core": "workspace:*",
         "@nivo/legends": "workspace:*",
         "@nivo/scales": "workspace:*",
+        "@nivo/theming": "workspace:*",
         "@nivo/tooltip": "workspace:*",
         "@nivo/voronoi": "workspace:*",
         "@react-spring/web": "9.4.5 || ^9.7.2",
+        "@types/d3-shape": "^3.1.6",
         "d3-shape": "^3.2.0"
     },
     "peerDependencies": {
-        "react": ">= 16.14.0 < 19.0.0"
+        "react": ">= 16.14.0 < 20.0.0"
     },
     "publishConfig": {
         "access": "public"

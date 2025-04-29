@@ -1,7 +1,8 @@
 import { createElement, useCallback, useEffect, useRef, useState } from 'react'
 import * as React from 'react'
-import isNumber from 'lodash/isNumber'
-import { Container, getRelativeCursor, isCursorInRect, useDimensions, useTheme } from '@nivo/core'
+import isNumber from 'lodash/isNumber.js'
+import { Container, getRelativeCursor, isCursorInRect, useDimensions } from '@nivo/core'
+import { useTheme } from '@nivo/theming'
 import { InheritedColorConfig, OrdinalColorScaleConfig, useInheritedColor } from '@nivo/colors'
 import { AnyScale } from '@nivo/scales'
 import { renderAxesToCanvas, renderGridLinesToCanvas } from '@nivo/axes'
@@ -80,7 +81,10 @@ export const InnerSwarmPlotCanvas = <RawDatum,>({
     axisLeft = defaultProps.axisLeft,
     isInteractive,
     onMouseMove,
+    onMouseDown,
+    onMouseUp,
     onClick,
+    onDoubleClick,
     tooltip = defaultProps.tooltip,
     role = defaultProps.role,
     pixelRatio = defaultProps.pixelRatio,
@@ -278,6 +282,26 @@ export const InnerSwarmPlotCanvas = <RawDatum,>({
         setCurrentNode(null)
     }, [hideTooltip, setCurrentNode])
 
+    const handleMouseDown = useCallback(
+        (event: React.MouseEvent) => {
+            const node = getNodeFromMouseEvent(event)
+            if (node) {
+                onMouseDown?.(node, event)
+            }
+        },
+        [getNodeFromMouseEvent, onMouseDown]
+    )
+
+    const handleMouseUp = useCallback(
+        (event: React.MouseEvent) => {
+            const node = getNodeFromMouseEvent(event)
+            if (node) {
+                onMouseUp?.(node, event)
+            }
+        },
+        [getNodeFromMouseEvent, onMouseUp]
+    )
+
     const handleClick = useCallback(
         (event: React.MouseEvent) => {
             const node = getNodeFromMouseEvent(event)
@@ -286,6 +310,16 @@ export const InnerSwarmPlotCanvas = <RawDatum,>({
             }
         },
         [getNodeFromMouseEvent, onClick]
+    )
+
+    const handleDoubleClick = useCallback(
+        (event: React.MouseEvent) => {
+            const node = getNodeFromMouseEvent(event)
+            if (node) {
+                onDoubleClick?.(node, event)
+            }
+        },
+        [getNodeFromMouseEvent, onDoubleClick]
     )
 
     return (
@@ -302,7 +336,10 @@ export const InnerSwarmPlotCanvas = <RawDatum,>({
             onMouseEnter={isInteractive ? handleMouseHover : undefined}
             onMouseMove={isInteractive ? handleMouseHover : undefined}
             onMouseLeave={isInteractive ? handleMouseLeave : undefined}
+            onMouseDown={isInteractive ? handleMouseDown : undefined}
+            onMouseUp={isInteractive ? handleMouseUp : undefined}
             onClick={isInteractive ? handleClick : undefined}
+            onDoubleClick={isInteractive ? handleDoubleClick : undefined}
         />
     )
 }

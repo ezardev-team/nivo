@@ -7,8 +7,8 @@
  * file that was distributed with this source code.
  */
 import { useMemo } from 'react'
-import isFunction from 'lodash/isFunction'
-import get from 'lodash/get'
+import isFunction from 'lodash/isFunction.js'
+import get from 'lodash/get.js'
 import { format } from 'd3-format'
 import {
     geoPath,
@@ -24,7 +24,8 @@ import {
     geoNaturalEarth1,
     geoGraticule,
 } from 'd3-geo'
-import { guessQuantizeColorScale, useTheme } from '@nivo/core'
+import { guessQuantizeColorScale } from '@nivo/core'
+import { useTheme } from '@nivo/theming'
 import { useInheritedColor } from '@nivo/colors'
 import { useQuantizeColorScaleLegendData } from '@nivo/legends'
 

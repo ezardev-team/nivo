@@ -2,15 +2,8 @@ import { AriaAttributes, FunctionComponent, MouseEvent } from 'react'
 import { HierarchyNode } from 'd3-hierarchy'
 import { Link as LinkShape, DefaultLinkObject } from 'd3-shape'
 import { SpringValues } from '@react-spring/web'
-import {
-    Box,
-    Dimensions,
-    MotionProps,
-    Theme,
-    PropertyAccessor,
-    CompleteTheme,
-    Margin,
-} from '@nivo/core'
+import { Box, Dimensions, MotionProps, PropertyAccessor, Margin } from '@nivo/core'
+import { PartialTheme, Theme } from '@nivo/theming'
 import { OrdinalColorScaleConfig, InheritedColorConfig } from '@nivo/colors'
 import { TooltipAnchor, TooltipPosition } from '@nivo/tooltip'
 
@@ -91,7 +84,10 @@ export interface NodeComponentProps<Datum> {
     onMouseEnter?: NodeMouseEventHandler<Datum>
     onMouseMove?: NodeMouseEventHandler<Datum>
     onMouseLeave?: NodeMouseEventHandler<Datum>
+    onMouseDown?: NodeMouseEventHandler<Datum>
+    onMouseUp?: NodeMouseEventHandler<Datum>
     onClick?: NodeMouseEventHandler<Datum>
+    onDoubleClick?: NodeMouseEventHandler<Datum>
     setCurrentNode: CurrentNodeSetter<Datum>
     tooltip?: NodeTooltip<Datum>
     tooltipPosition: TooltipPosition
@@ -138,7 +134,10 @@ export interface LinkComponentProps<Datum> {
     onMouseEnter?: LinkMouseEventHandler<Datum>
     onMouseMove?: LinkMouseEventHandler<Datum>
     onMouseLeave?: LinkMouseEventHandler<Datum>
+    onMouseDown?: LinkMouseEventHandler<Datum>
+    onMouseUp?: LinkMouseEventHandler<Datum>
     onClick?: LinkMouseEventHandler<Datum>
+    onDoubleClick?: LinkMouseEventHandler<Datum>
     tooltip?: LinkTooltip<Datum>
     tooltipAnchor: TooltipAnchor
     animatedProps: SpringValues<LinkAnimatedProps>
@@ -189,7 +188,7 @@ export type LabelComponent<Datum> = FunctionComponent<LabelComponentProps<Datum>
 
 export interface LabelCanvasRendererProps<Datum> {
     label: ComputedLabel<Datum>
-    theme: CompleteTheme
+    theme: Theme
 }
 export type LabelCanvasRenderer<Datum> = (
     ctx: CanvasRenderingContext2D,
@@ -224,7 +223,7 @@ export interface CommonProps<Datum> extends MotionProps {
     layout: Layout
     identity: PropertyAccessor<Datum, string>
 
-    theme: Theme
+    theme: PartialTheme
     nodeSize: number | NodeSizeFunction<Datum>
     activeNodeSize: number | NodeSizeModifierFunction<Datum>
     inactiveNodeSize: number | NodeSizeModifierFunction<Datum>
@@ -253,7 +252,10 @@ export interface CommonProps<Datum> extends MotionProps {
     onNodeMouseEnter: NodeMouseEventHandler<Datum>
     onNodeMouseMove: NodeMouseEventHandler<Datum>
     onNodeMouseLeave: NodeMouseEventHandler<Datum>
+    onNodeMouseDown: NodeMouseEventHandler<Datum>
+    onNodeMouseUp: NodeMouseEventHandler<Datum>
     onNodeClick: NodeMouseEventHandler<Datum>
+    onNodeDoubleClick: NodeMouseEventHandler<Datum>
     nodeTooltip: NodeTooltip<Datum>
     nodeTooltipPosition: TooltipPosition
     nodeTooltipAnchor: TooltipAnchor
@@ -273,12 +275,15 @@ export type TreeSvgProps<Datum> = TreeDataProps<Datum> &
         nodeComponent?: NodeComponent<Datum>
         linkComponent?: LinkComponent<Datum>
         labelComponent?: LabelComponent<Datum>
-        onLinkMouseEnter: LinkMouseEventHandler<Datum>
-        onLinkMouseMove: LinkMouseEventHandler<Datum>
-        onLinkMouseLeave: LinkMouseEventHandler<Datum>
-        onLinkClick: LinkMouseEventHandler<Datum>
-        linkTooltip: LinkTooltip<Datum>
-        linkTooltipAnchor: TooltipAnchor
+        onLinkMouseEnter?: LinkMouseEventHandler<Datum>
+        onLinkMouseMove?: LinkMouseEventHandler<Datum>
+        onLinkMouseLeave?: LinkMouseEventHandler<Datum>
+        onLinkMouseDown?: LinkMouseEventHandler<Datum>
+        onLinkMouseUp?: LinkMouseEventHandler<Datum>
+        onLinkClick?: LinkMouseEventHandler<Datum>
+        onLinkDoubleClick?: LinkMouseEventHandler<Datum>
+        linkTooltip?: LinkTooltip<Datum>
+        linkTooltipAnchor?: TooltipAnchor
     }
 
 export type ResponsiveTreeSvgProps<Datum> = Omit<TreeSvgProps<Datum>, 'height' | 'width'>

@@ -1,17 +1,9 @@
-/*
- * This file is part of the nivo project.
- *
- * Copyright 2016-present, Raphaël Benitte.
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
 import { memo, useRef, useEffect, useCallback } from 'react'
 import { geoContains } from 'd3-geo'
-import { getRelativeCursor, withContainer, useDimensions, useTheme } from '@nivo/core'
+import { getRelativeCursor, withContainer, useDimensions } from '@nivo/core'
+import { useTheme } from '@nivo/theming'
 import { renderLegendToCanvas } from '@nivo/legends'
 import { useTooltip } from '@nivo/tooltip'
-import { ChoroplethCanvasPropTypes } from './props'
 import { useGeoMap, useChoropleth } from './hooks'
 import ChoroplethTooltip from './ChoroplethTooltip'
 
@@ -213,8 +205,5 @@ const ChoroplethCanvas = memo(props => {
         />
     )
 })
-
-ChoroplethCanvas.displayName = 'ChoroplethCanvas'
-ChoroplethCanvas.propTypes = ChoroplethCanvasPropTypes
 
 export default withContainer(ChoroplethCanvas)

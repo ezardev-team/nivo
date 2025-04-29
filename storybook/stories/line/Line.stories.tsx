@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { Component, useState, useEffect } from 'react'
-import range from 'lodash/range'
-import last from 'lodash/last'
+import range from 'lodash/range.js'
+import last from 'lodash/last.js'
 import { generateDrinkStats } from '@nivo/generators'
 import { Defs, linearGradientDef } from '@nivo/core'
 import { area, curveMonotoneX } from 'd3-shape'
 import * as time from 'd3-time'
 import { timeFormat } from 'd3-time-format'
-import { Line } from '@nivo/line'
+import { Line, LineSvgProps, PointSymbolProps, LineCustomSvgLayerProps } from '@nivo/line'
 
 const meta: Meta<typeof Line> = {
     title: 'Line',
@@ -28,7 +28,18 @@ export default meta
 type Story = StoryObj<typeof Line>
 
 const data = generateDrinkStats(18)
-const commonProperties = {
+type SampleSeries = (typeof data)[number]
+const commonProperties: Pick<
+    LineSvgProps<SampleSeries>,
+    | 'width'
+    | 'height'
+    | 'margin'
+    | 'data'
+    | 'animate'
+    | 'enableTouchCrosshair'
+    | 'enableSlices'
+    | 'initialHiddenIds'
+> = {
     width: 900,
     height: 400,
     margin: { top: 20, right: 20, bottom: 60, left: 80 },
@@ -39,7 +50,7 @@ const commonProperties = {
     initialHiddenIds: ['cognac'],
 }
 
-const CustomSymbol = ({ size, color, borderWidth, borderColor }) => (
+const CustomSymbol = ({ size, color, borderWidth, borderColor }: PointSymbolProps<any>) => (
     <g>
         <circle fill="#fff" r={size / 2} strokeWidth={borderWidth} stroke={borderColor} />
         <circle
@@ -123,6 +134,57 @@ export const LinearScale: Story = {
     ),
 }
 
+/**
+ * By default, \`round\` is set to `true`, producing artifacts which are especially
+ * pronounced on the charts with small heights.
+ */
+export const RoundedLinearScale: StoryObj<{
+    curve: 'linear' | 'monotoneX' | 'step' | 'stepBefore' | 'stepAfter'
+    round?: boolean
+}> = {
+    render: args => (
+        <Line
+            {...commonProperties}
+            curve={args.curve}
+            animate={false}
+            pointSize={0}
+            data={[
+                {
+                    id: 'value',
+                    data: Array.from({ length: 200 }, (_, i) => ({
+                        x: i,
+                        y: i,
+                    })),
+                },
+            ]}
+            xScale={{
+                type: 'linear',
+                min: 0,
+                max: 'auto',
+            }}
+            yScale={{
+                type: 'linear',
+                round: args.round,
+            }}
+            axisLeft={{
+                legend: 'linear scale',
+                legendOffset: 12,
+            }}
+            axisBottom={{
+                legend: 'linear scale',
+                legendOffset: -12,
+            }}
+            height={200}
+        />
+    ),
+    argTypes: {
+        round: {
+            control: 'boolean',
+            description: 'Round the interpolated (y) axis values',
+        },
+    },
+}
+
 export const TimeScale: Story = {
     render: args => (
         <Line
@@ -164,7 +226,6 @@ export const TimeScale: Story = {
             xFormat="time:%Y-%m-%d"
             yScale={{
                 type: 'linear',
-                // stacked: boolean('stacked', false),
             }}
             axisLeft={{
                 legend: 'linear scale',
@@ -499,7 +560,6 @@ export const CustomPointSymbol: Story = {
             {...commonProperties}
             yScale={{
                 type: 'linear',
-                // stacked: boolean('stacked', true),
             }}
             curve={args.curve}
             pointSymbol={CustomSymbol}
@@ -545,7 +605,6 @@ export const AddingMarkers: Story = {
             {...commonProperties}
             yScale={{
                 type: 'linear',
-                //stacked: boolean('stacked', true),
             }}
             curve={args.curve}
             markers={[
@@ -589,7 +648,6 @@ export const HolesInData: Story = {
             ]}
             yScale={{
                 type: 'linear',
-                // stacked: boolean('stacked', false),
             }}
             curve={args.curve}
             pointSize={8}
@@ -713,7 +771,7 @@ export const NonLinearValues: Story = {
             lineWidth={4}
             pointSize={8}
             pointColor="white"
-            pointBorderColor={{ from: 'serieColor' }}
+            pointBorderColor={{ from: 'seriesColor' }}
             pointBorderWidth={2}
             enableSlices={false}
             useMesh={true}
@@ -883,7 +941,6 @@ export const FormattingValues: Story = {
             curve={args.curve}
             yScale={{
                 type: 'linear',
-                //stacked: boolean('stacked', true),
             }}
             yFormat={value =>
                 `${Number(value).toLocaleString('ru-RU', {
@@ -902,7 +959,6 @@ export const CustomTooltip: Story = {
             curve={args.curve}
             yScale={{
                 type: 'linear',
-                //stacked: boolean('stacked', true),
             }}
             sliceTooltip={({ slice }) => {
                 return (
@@ -918,11 +974,11 @@ export const CustomTooltip: Story = {
                             <div
                                 key={point.id}
                                 style={{
-                                    color: point.serieColor,
+                                    color: point.seriesColor,
                                     padding: '3px 0',
                                 }}
                             >
-                                <strong>{point.serieId}</strong> [{point.data.yFormatted}]
+                                <strong>{point.seriesId}</strong> [{point.data.yFormatted}]
                             </div>
                         ))}
                     </div>
@@ -932,7 +988,12 @@ export const CustomTooltip: Story = {
     ),
 }
 
-const AreaLayer = ({ series, xScale, yScale, innerHeight }) => {
+const AreaLayer = ({
+    series,
+    xScale,
+    yScale,
+    innerHeight,
+}: LineCustomSvgLayerProps<SampleSeries>) => {
     const areaGenerator = area()
         .x(d => xScale(d.data.x))
         .y0(d => Math.min(innerHeight, yScale(d.data.y - 40)))
@@ -973,7 +1034,7 @@ export const CustomLayers: Story = {
         curve: 'linear',
     },
     render: args => (
-        <Line
+        <Line<SampleSeries>
             {...commonProperties}
             yScale={{
                 type: 'linear',
@@ -987,7 +1048,7 @@ export const CustomLayers: Story = {
             pointSize={12}
             pointColor="white"
             pointBorderWidth={2}
-            pointBorderColor={{ from: 'serieColor' }}
+            pointBorderColor={{ from: 'seriesColor' }}
             layers={[
                 'grid',
                 'markers',
@@ -1032,16 +1093,23 @@ const styleById = {
     },
 }
 
-const DashedLine = ({ series, lineGenerator, xScale, yScale }) => {
+const DashedLine = ({
+    series,
+    lineGenerator,
+    xScale,
+    yScale,
+}: LineCustomSvgLayerProps<SampleSeries>) => {
     return series.map(({ id, data, color }) => (
         <path
             key={id}
-            d={lineGenerator(
-                data.map(d => ({
-                    x: xScale(d.data.x),
-                    y: yScale(d.data.y),
-                }))
-            )}
+            d={
+                lineGenerator(
+                    data.map(d => ({
+                        x: xScale(d.data.x),
+                        y: yScale(d.data.y),
+                    }))
+                )!
+            }
             fill="none"
             stroke={color}
             style={styleById[id] || styleById.default}
@@ -1067,13 +1135,11 @@ export const CustomLineStyle: Story = {
                 max: 'auto',
             }}
             axisBottom={{
-                orient: 'bottom',
                 tickSize: 5,
                 tickPadding: 5,
                 tickRotation: 0,
             }}
             axisLeft={{
-                orient: 'left',
                 tickSize: 5,
                 tickPadding: 5,
                 tickRotation: 0,

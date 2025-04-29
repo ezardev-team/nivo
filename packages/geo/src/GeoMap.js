@@ -1,15 +1,7 @@
-/*
- * This file is part of the nivo project.
- *
- * Copyright 2016-present, Raphaël Benitte.
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
 import { Fragment, useCallback, memo } from 'react'
-import { SvgWrapper, withContainer, useDimensions, useTheme } from '@nivo/core'
+import { SvgWrapper, withContainer, useDimensions } from '@nivo/core'
+import { useTheme } from '@nivo/theming'
 import { useTooltip } from '@nivo/tooltip'
-import { GeoMapPropTypes } from './props'
 import GeoGraticule from './GeoGraticule'
 import GeoMapFeature from './GeoMapFeature'
 import { useGeoMap } from './hooks'
@@ -119,8 +111,5 @@ const GeoMap = memo(props => {
         </SvgWrapper>
     )
 })
-
-GeoMap.displayName = 'GeoMap'
-GeoMap.propTypes = GeoMapPropTypes
 
 export default withContainer(GeoMap)

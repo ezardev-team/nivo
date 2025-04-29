@@ -1,6 +1,6 @@
 {
     "name": "@nivo/swarmplot",
-    "version": "0.88.0",
+    "version": "0.92.0",
     "license": "MIT",
     "author": {
         "name": "Raphaël Benitte",
@@ -21,8 +21,15 @@
         "swarmplot"
     ],
     "main": "./dist/nivo-swarmplot.cjs.js",
-    "module": "./dist/nivo-swarmplot.es.js",
+    "module": "./dist/nivo-swarmplot.mjs",
     "types": "./dist/types/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/types/index.d.ts",
+            "import": "./dist/nivo-swarmplot.mjs",
+            "require": "./dist/nivo-swarmplot.cjs.js"
+        }
+    },
     "files": [
         "README.md",
         "LICENSE.md",
@@ -36,6 +43,7 @@
         "@nivo/core": "workspace:*",
         "@nivo/legends": "workspace:*",
         "@nivo/scales": "workspace:*",
+        "@nivo/theming": "workspace:*",
         "@nivo/tooltip": "workspace:*",
         "@nivo/voronoi": "workspace:*",
         "@react-spring/web": "9.4.5 || ^9.7.2",
@@ -46,7 +54,7 @@
         "lodash": "^4.17.21"
     },
     "peerDependencies": {
-        "react": ">= 16.14.0 < 19.0.0"
+        "react": ">= 16.14.0 < 20.0.0"
     },
     "publishConfig": {
         "access": "public"

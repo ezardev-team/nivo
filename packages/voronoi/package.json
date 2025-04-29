@@ -1,6 +1,6 @@
 {
     "name": "@nivo/voronoi",
-    "version": "0.88.0",
+    "version": "0.92.0",
     "license": "MIT",
     "author": {
         "name": "Raphaël Benitte",
@@ -20,8 +20,15 @@
         "voronoi"
     ],
     "main": "./dist/nivo-voronoi.cjs.js",
-    "module": "./dist/nivo-voronoi.es.js",
+    "module": "./dist/nivo-voronoi.mjs",
     "types": "./dist/types/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/types/index.d.ts",
+            "import": "./dist/nivo-voronoi.mjs",
+            "require": "./dist/nivo-voronoi.cjs.js"
+        }
+    },
     "files": [
         "README.md",
         "LICENSE.md",
@@ -30,14 +37,15 @@
     ],
     "dependencies": {
         "@nivo/core": "workspace:*",
-        "@nivo/tooltip": "workspace:0.88.0",
+        "@nivo/theming": "workspace:*",
+        "@nivo/tooltip": "workspace:0.92.0",
         "@types/d3-delaunay": "^6.0.4",
         "@types/d3-scale": "^4.0.8",
         "d3-delaunay": "^6.0.4",
         "d3-scale": "^4.0.2"
     },
     "peerDependencies": {
-        "react": ">= 16.14.0 < 19.0.0"
+        "react": ">= 16.14.0 < 20.0.0"
     },
     "publishConfig": {
         "access": "public"

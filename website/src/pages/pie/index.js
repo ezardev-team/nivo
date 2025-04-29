@@ -57,6 +57,7 @@ const initialProperties = {
     arcLabel: 'formattedValue',
     arcLabelsRadiusOffset: 0.5,
     arcLabelsSkipAngle: 10,
+    arcLabelsSkipRadius: 0,
     arcLabelsTextColor: {
         from: 'color',
         modifiers: [['darker', 2]],
@@ -127,6 +128,10 @@ const Pie = () => {
             initialProperties={initialProperties}
             defaultProperties={defaultProps}
             propertiesMapper={mapper}
+            codePropertiesMapper={properties => ({
+                ...properties,
+                tooltip: properties.tooltip ? 'CustomTooltip' : undefined,
+            })}
             generateData={generateData}
             image={image}
         >

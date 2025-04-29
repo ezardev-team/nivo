@@ -1,6 +1,6 @@
 {
     "name": "nivo-e2e",
-    "version": "0.88.0",
+    "version": "0.92.0",
     "private": true,
     "description": "nivo end-to-end tests",
     "dependencies": {
@@ -25,6 +25,7 @@
         "@nivo/network": "workspace:*",
         "@nivo/parallel-coordinates": "workspace:*",
         "@nivo/pie": "workspace:*",
+        "@nivo/polar-bar": "workspace:*",
         "@nivo/radar": "workspace:*",
         "@nivo/radial-bar": "workspace:*",
         "@nivo/sankey": "workspace:*",
@@ -43,7 +44,7 @@
         "test": "cypress run --component"
     },
     "engines": {
-        "node": ">=18"
+        "node": "22.x"
     },
     "devDependencies": {
         "cypress": "^13.8.1",

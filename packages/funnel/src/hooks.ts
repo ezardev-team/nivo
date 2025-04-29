@@ -2,13 +2,14 @@ import { createElement, useMemo, useState, MouseEvent } from 'react'
 import { line, area, curveBasis, curveLinear } from 'd3-shape'
 import { ScaleLinear, scaleLinear, scaleOrdinal } from 'd3-scale'
 import { useInheritedColor, useOrdinalColorScale } from '@nivo/colors'
-import { useTheme, useValueFormatter } from '@nivo/core'
+import { useValueFormatter } from '@nivo/core'
+import { useTheme } from '@nivo/theming'
 import { useAnnotations } from '@nivo/annotations'
 import { useTooltip, TooltipActionsContextData } from '@nivo/tooltip'
 import { svgDefaultProps as defaults } from './props'
 import { PartTooltip, PartTooltipProps } from './PartTooltip'
-import isPlainObject from 'lodash/isPlainObject'
-import get from 'lodash/get'
+import isPlainObject from 'lodash/isPlainObject.js'
+import get from 'lodash/get.js'
 import {
     FunnelDatum,
     FunnelCommonProps,

@@ -1,6 +1,6 @@
 {
     "name": "@nivo/funnel",
-    "version": "0.88.0",
+    "version": "0.92.0",
     "license": "MIT",
     "author": {
         "name": "Raphaël Benitte",
@@ -20,7 +20,7 @@
         "funnel"
     ],
     "main": "./dist/nivo-funnel.cjs.js",
-    "module": "./dist/nivo-funnel.es.js",
+    "module": "./dist/nivo-funnel.mjs",
     "types": "./dist/types/index.d.ts",
     "files": [
         "README.md",
@@ -32,6 +32,8 @@
         "@nivo/annotations": "workspace:*",
         "@nivo/colors": "workspace:*",
         "@nivo/core": "workspace:*",
+        "@nivo/text": "workspace:*",
+        "@nivo/theming": "workspace:*",
         "@nivo/tooltip": "workspace:*",
         "@react-spring/web": "9.4.5 || ^9.7.2",
         "@types/d3-scale": "^4.0.8",
@@ -40,9 +42,16 @@
         "d3-shape": "^3.2.0"
     },
     "peerDependencies": {
-        "react": ">= 16.14.0 < 19.0.0"
+        "react": ">= 16.14.0 < 20.0.0"
     },
     "publishConfig": {
         "access": "public"
+    },
+    "exports": {
+        ".": {
+            "types": "./dist/types/index.d.ts",
+            "import": "./dist/nivo-funnel.mjs",
+            "require": "./dist/nivo-funnel.cjs.js"
+        }
     }
 }
