@@ -81,7 +81,7 @@
   },
   "scripts": {
     "make:init": "make init",
-    "build": "echo 'nothing to do, please use make for available commands'",
+    "build": "make pkg-build-core && make pkg-build-colors && make pkg-build-tooltip && make pkg-build-legends && make pkg-build-sankey",
     "heroku-postbuild": "make pkgs-build && cd api && pnpm build"
   },
   "engines": {
