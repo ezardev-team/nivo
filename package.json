@@ -80,7 +80,7 @@
   },
   "scripts": {
     "make:init": "make init",
-    "build": "make pkg-build-core && make pkg-build-colors && make pkg-build-tooltip && make pkg-build-legends && make pkg-build-sankey",
+    "build": "make pkgs-build",
     "heroku-postbuild": "make pkgs-build && cd api && pnpm build",
     "codesandbox:init": "pnpm install && pnpm run pkgs:types:check && pnpm run pkgs:build",
     "pkgs:types:check": "pnpm tsc --build ./tsconfig.monorepo.json",
