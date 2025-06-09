@@ -1,0 +1,11 @@
+{
+    "extends": "../../tsconfig.types.json",
+    "compilerOptions": {
+        "baseUrl": ".",
+        "outDir": "./dist/types",
+        "rootDir": "./src",
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext"
+    },
+    "include": ["src/**/*"]
+}
