@@ -110,6 +110,34 @@ export const computeNodeAndLinks = <N extends DefaultNode, L extends DefaultLink
         }
     })
 
+    const maxY1 = Math.max(...data.nodes.map(node => node.y1))
+
+    data.nodes.forEach(node => {
+        const nodesAtSameDepth = data.nodes.filter(n => n.layer === node.layer)
+        const maxY1AtSameDepth = Math.max(...nodesAtSameDepth.map(n => n.y1))
+        const y1Diff = maxY1 - maxY1AtSameDepth
+
+        let nodesLength = nodesAtSameDepth.length
+
+        const lastNodeAtSameDepth = nodesAtSameDepth.reduce(
+            (acc, n) => {
+                return n.y0 < node.y0 && n.y0 > (acc?.y0 || -Infinity) ? n : acc
+            },
+            null as SankeyNodeDatum<N, L> | null
+        )
+
+        let newMargin = (lastNodeAtSameDepth?.gap || 0) + (node.gap || 0)
+
+        if (node.y0 != 0 && nodesLength > 1) {
+            newMargin += y1Diff / (nodesLength - 1)
+        } else if (nodesLength === 1) {
+            newMargin = (maxY1 - node.height) / 2
+        }
+
+        node.y = node.y + newMargin
+        node.gap = node.gap + newMargin
+    })
+
     data.links.forEach(link => {
         link.formattedValue = formatValue(link.value)
         link.color = link.color || link.source.color
