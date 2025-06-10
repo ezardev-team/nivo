@@ -112,7 +112,7 @@ export const computeNodeAndLinks = <N extends DefaultNode, L extends DefaultLink
 
     data.links.forEach(link => {
         link.formattedValue = formatValue(link.value)
-        link.color = link.source.color
+        link.color = link.color || link.source.color
 
         // Adjust link positions based on node margins
         if (layout === 'horizontal') {
