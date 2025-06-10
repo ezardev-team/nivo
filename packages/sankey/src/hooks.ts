@@ -131,7 +131,9 @@ export const computeNodeAndLinks = <N extends DefaultNode, L extends DefaultLink
         if (node.y0 != 0 && nodesLength > 1) {
             newMargin += y1Diff / (nodesLength - 1)
         } else if (nodesLength === 1) {
-            newMargin = (maxY1 - node.height) / 2
+            const centerY = maxY1 / 2
+            const nodeCenter = node.y0 + node.height / 2
+            newMargin = centerY - nodeCenter
         }
 
         node.y = node.y + newMargin
