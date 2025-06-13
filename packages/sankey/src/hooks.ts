@@ -75,6 +75,36 @@ export const computeNodeAndLinks = <N extends DefaultNode, L extends DefaultLink
         node.gap = (node.gap ?? 0) + spacingIncrease * Math.abs(centerLayer - node.layer)
     })
 
+    let layerDiffMap: Record<string, number> = {}
+
+    data.nodes.forEach(node => {
+        if (!Object.keys(layerDiffMap).find(layer => layer === node.layer.toString())) {
+            const nodesAtSameDepth = data.nodes.filter(n => n.layer === node.layer)
+            const firstNodeAtSameDepth = nodesAtSameDepth.reduce(
+                (acc, n) => {
+                    return n.y0 < (acc?.y0 || Infinity) ? n : acc
+                },
+                null as SankeyNodeDatum<N, L> | null
+            )
+
+            const yDiff = firstNodeAtSameDepth?.y0
+            const currentLayer = node.layer
+            if (!firstNodeAtSameDepth || currentLayer === undefined || yDiff === undefined) {
+                return
+            }
+
+            layerDiffMap = {
+                ...layerDiffMap,
+                [currentLayer.toString()]: yDiff,
+            }
+        }
+
+        node.y = node.y - layerDiffMap[node.layer.toString()]
+        node.y0 = node.y0 - layerDiffMap[node.layer.toString()]
+        node.y1 = node.y1 - layerDiffMap[node.layer.toString()]
+    })
+
+
     data.nodes.forEach(node => {
         node.color = getColor(node)
         node.label = getLabel(node)
@@ -147,14 +177,14 @@ export const computeNodeAndLinks = <N extends DefaultNode, L extends DefaultLink
         // Adjust link positions based on node margins
         if (layout === 'horizontal') {
             // @ts-expect-error: @types/d3-sankey
-            link.pos0 = link.y0 + link.source.gap
+            link.pos0 = link.y0 + link.source.gap - layerDiffMap[link.source.layer.toString()]
             // @ts-expect-error: @types/d3-sankey
-            link.pos1 = link.y1 + link.target.gap
+            link.pos1 = link.y1 + link.target.gap - layerDiffMap[link.target.layer.toString()]
         } else {
             // @ts-expect-error: @types/d3-sankey
-            link.pos0 = link.y0 + link.source.gap
+            link.pos0 = link.y0 + link.source.gap - layerDiffMap[link.source.layer.toString()]
             // @ts-expect-error: @types/d3-sankey
-            link.pos1 = link.y1 + link.target.gap
+            link.pos1 = link.y1 + link.target.gap - layerDiffMap[link.target.layer.toString()]
         }
 
         // @ts-expect-error: @types/d3-sankey
