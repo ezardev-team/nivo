@@ -82,7 +82,8 @@ export const computeNodeAndLinks = <N extends DefaultNode, L extends DefaultLink
             const nodesAtSameDepth = data.nodes.filter(n => n.layer === node.layer)
             const firstNodeAtSameDepth = nodesAtSameDepth.reduce(
                 (acc, n) => {
-                    return n.y0 < (acc?.y0 || Infinity) ? n : acc
+                    if (!acc) return n
+                    return n.y0 < acc.y0 ? n : acc
                 },
                 null as SankeyNodeDatum<N, L> | null
             )
